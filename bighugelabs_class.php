@@ -9,7 +9,7 @@ class BigHugeLabs{
 
     private $filename;
     private $base_url = 'http://words.bighugelabs.com/api/2';
-    private $api_key = '{YOUR API KEY}';
+    private $api_key = 'ee6d63c27c3bd86cdc9b3cc43d64d2e7';
 
     function __construct(){
 
@@ -63,9 +63,11 @@ class BigHugeLabs{
 
     public function generateCSV($keywords){
 
+        $result_keywords = array();
         $raw_keywords = array('&', '(', ')');
         try {
             $this->generateFileName();  //generate a random csv file name
+
             foreach($keywords as $key => $keyword_str){
 
                 foreach($raw_keywords as $rk){
@@ -75,7 +77,15 @@ class BigHugeLabs{
                 //echo $keyword_str .'<br>';continue;
 
                 $keywords = preg_split('/\s+/', $keyword_str);  //if keyword are combination of multiple words
+
                 foreach($keywords as $keyword){
+
+                    $keyword = strtolower($keyword);
+                    if(in_array($keyword, $result_keywords)){
+                        continue;
+                    }
+                    $result_keywords[] = $keyword;
+
                     $output = $this->getKeywordSynonyms($keyword);
 
                     $result = array($keyword);
